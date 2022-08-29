@@ -1,10 +1,9 @@
 package ru.maksirep.chatbot.other;
 
 public class ConstClass {
-    public final static String HELLO_MESSAGE = "Здравствуйте! Меня зовут IndividualHelperBot!";
-    public final static String HELLO_MESSAGE_ADDITION = "Для начала прошу вас ответить на два моих вопроса , для определения необходимых функций. Прошу отвечать на вопросы строго : \"Да\" или \"Нет\"";
-    public final static String HELLO_MESSAGE_FIRST_QUESTION = "Имеются ли у вас проблемы со зрением?";
-    public final static String HELLO_MESSAGE_SECOND_QUESTION = "Имеются ли у вас проблемы со слухом?";
-    public final static String BOT_ABILITY = "Мои будущие способности :";
-    public final static String ERROR_MESSAGE = "Простите, мне незнакома эта команда, попробуйте еще раз";
+    public final static String BOT_TOKEN = "5331221623:AAEZEk0wmKFr8oH4qTOfCj95rsqMi9AGGaI";
+    public final static String MAIN_FOLDER_PATH = "MainFolder";
+    public final static String CHAT_VALUES_PATH = MAIN_FOLDER_PATH + "/ChatValues";
+    public final static String MAIN_VALUES_PATH = CHAT_VALUES_PATH + "/MainValues";
+    public final static String DICTIONARY_PATH = MAIN_FOLDER_PATH + "/Dictionary";
 }
