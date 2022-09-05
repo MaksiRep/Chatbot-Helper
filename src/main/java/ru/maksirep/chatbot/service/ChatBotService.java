@@ -41,8 +41,12 @@ public class ChatBotService {
         return chatTtsButtonsService.getTtsCommands(chatBotRepository.getByChatId(chatId));
     }
 
-    public void addTtsCommands (String text, String chatId) {
-        chatTtsButtonsService.saveTtsCommands(text, chatBotRepository.getByChatId(chatId));
+    public String addTtsCommands (String text, String chatId) {
+        return chatTtsButtonsService.saveTtsCommands(text, chatBotRepository.getByChatId(chatId));
+    }
+
+    public String deleteTtsCommands (String text, String chatId) {
+        return chatTtsButtonsService.deleteTtsCommands(text, chatBotRepository.getByChatId(chatId));
     }
 
     public void saveLog (String chatId) {

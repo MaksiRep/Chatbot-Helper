@@ -11,4 +11,6 @@ import java.util.ArrayList;
 public interface ChatTtsButtonsRepository extends JpaRepository<ChatTtsButtons, Long> {
 
     public ArrayList<ChatTtsButtons> findAllByChatBot(ChatBot chatBot);
+
+    public ChatTtsButtons findByNameAndChatBot (String name, ChatBot chatBot);
 }
