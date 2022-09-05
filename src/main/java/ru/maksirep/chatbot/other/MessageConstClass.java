@@ -19,4 +19,12 @@ public class MessageConstClass {
     public final static String VOICE_COMMANDS_POLICE = "Пожалуйста, вызовите полицию!";
     public final static String VOICE_COMMANDS_AMBULANCE = "Пожалуйста, вызовите скорую помощь!";
     public final static String BACK_COMMAND = "Назад";
+    public final static String ADD_VOICE_COMMAND = "Добавить команду";
+    public final static String ADDING_VOICE_COMMAND = "Добавление команды, введите желаемую команду";
+    public final static String DELETE_VOICE_COMMAND = "Удалить команду";
+    public final static String DELETING_VOICE_COMMAND = "Удаление команды, введите желаемую команду";
+    public final static String ADDED_VOICE_COMMAND = "Команда добавлена";
+    public final static String DELETED_VOICE_COMMAND = "Команда удалена";
+    public final static String EXIST_VOICE_COMMAND = "Команда уже существует";
+    public final static String NOT_EXIST_VOICE_COMMAND = "Команды не существует";
 }

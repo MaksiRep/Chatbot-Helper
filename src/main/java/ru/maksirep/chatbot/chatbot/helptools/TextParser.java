@@ -4,6 +4,7 @@ import ru.maksirep.chatbot.other.ConstClass;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -47,7 +48,7 @@ public class TextParser {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    return stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
     private String[] firstStringFix(String[] stringsArray) {
@@ -85,6 +86,8 @@ public class TextParser {
 
         private String word;
 
+        private int minMetric = 4;
+
         public LivenshtainParsing(String word) {
             this.word = word;
         }
@@ -103,7 +106,6 @@ public class TextParser {
             if (checkedWord.contains("punctuation")) {
                 return checkedWord.substring(11);
             }
-            int minMetric = 4;
             char lastCh = checkedWord.charAt(checkedWord.length() - 1);
             char firstCh = checkedWord.charAt(0);
             StringBuilder stringBuilder = new StringBuilder();
@@ -112,14 +114,12 @@ public class TextParser {
                 checkedWord = stringBuilder.toString();
                 stringBuilder.delete(0, stringBuilder.length());
             }
-            String endString = new String(checkedWord);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(ConstClass.DICTIONARY_PATH + "/" + Character.toUpperCase(checkedWord.charAt(0)) + "russian.txt"));
-            for (String line; (line = bufferedReader.readLine()) != null; ) {
-                int newMetric = livenshtain(checkedWord.toLowerCase(Locale.ROOT), line);
-                if (newMetric < minMetric || (minMetric == -1)) {
-                    minMetric = newMetric;
-                    endString = line;
-                }
+            String endString = findDictWord(checkedWord, 0);
+            if (minMetric == 3) {
+                endString = findDictWord(checkedWord, 1);
+            }
+            if (minMetric == 4) {
+                return "";
             }
             if (!Character.isLetter(lastCh)) {
                 endString = endString + lastCh;
@@ -130,8 +130,19 @@ public class TextParser {
             if (Character.isUpperCase(firstCh)) {
                 endString = Character.toUpperCase(endString.charAt(0)) + endString.substring(1).toLowerCase();
             }
-            if (minMetric == 4) {
-                return "";
+
+            return endString;
+        }
+
+        private String findDictWord (String checkedWord, int charPos) throws IOException {
+            String endString = new String(checkedWord);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(ConstClass.DICTIONARY_PATH + "/" + Character.toUpperCase(checkedWord.charAt(charPos)) + "russian.txt"));
+            for (String line; (line = bufferedReader.readLine()) != null; ) {
+                int newMetric = livenshtain(checkedWord.toLowerCase(Locale.ROOT), line);
+                if (newMetric < minMetric || (minMetric == -1)) {
+                    minMetric = newMetric;
+                    endString = line;
+                }
             }
             return endString;
         }
@@ -149,7 +160,7 @@ public class TextParser {
                 for (int i = 0; i < word.length(); i++) {
                     char ch = word.charAt(i);
                     boolean cValuesContains = cValues.contains(Character.toString(ch));
-                    if (!Character.isDigit(ch) && ch != '.' && ch !=',' && !cValuesContains)
+                    if (!Character.isDigit(ch) && ch != '.' && ch != ',' && !cValuesContains)
                         return "";
                 }
                 return "digit" + word;

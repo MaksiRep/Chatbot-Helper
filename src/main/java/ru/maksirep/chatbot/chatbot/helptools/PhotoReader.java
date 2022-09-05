@@ -3,6 +3,10 @@ package ru.maksirep.chatbot.chatbot.helptools;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.json.JSONObject;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Document;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import ru.maksirep.chatbot.other.ConstClass;
 
 import javax.imageio.ImageIO;
@@ -12,10 +16,31 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class PhotoReader {
 
-    public String readPhoto (String chatId, String fileId) throws IOException {
+    public SendMessage getPhoto(String chatId, List<PhotoSize> photos, Document document) {
+        SendMessage sendMessage = new SendMessage();
+        GetFile getFileRequest = new GetFile();
+        String textFromPhoto = "";
+        try {
+            if (photos != null && photos.size() != 0) {
+                getFileRequest.setFileId(photos.get(photos.size() - 1).getFileId());
+                textFromPhoto = readPhoto(chatId, getFileRequest.getFileId());
+            } else if (document != null) {
+                getFileRequest.setFileId(document.getFileId());
+                textFromPhoto = readPhoto(chatId, getFileRequest.getFileId());
+            }
+            sendMessage.setText(textFromPhoto);
+            sendMessage.setChatId(chatId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sendMessage;
+    }
+
+    private String readPhoto (String chatId, String fileId) throws IOException {
         downloadFile(chatId, fileId);
         PhotoHelper photoHelper = new PhotoHelper();
         String pathForImprove = ConstClass.CHAT_VALUES_PATH + "/" + chatId + "/" + chatId + "_" + fileId + ".jpg";
@@ -37,7 +62,6 @@ public class PhotoReader {
         }
         TextParser textParser = new TextParser();
         if (!text.equals("")) {
-            System.out.println(text);
             return textParser.parse(text);
         } else {
             return text;
